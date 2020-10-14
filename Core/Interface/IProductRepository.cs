@@ -6,7 +6,7 @@ namespace Core.Interface
 {
     public interface IProductRepository
     {
-        Task<Product> GetProductByAsync(int id); 
+        Task<Product> GetProductByIdAsync(int id); 
         Task<IReadOnlyList<Product>> GetProductsAsync();
     }
 }
