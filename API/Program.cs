@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace API
                 {
                     var context = services.GetRequiredService<StoreContext>();
                     await context.Database.MigrateAsync();
+                    await StoreContextSeed.SeedAsync(context, loggerFactory);
                 }
                 catch (Exception ex)
                 {
