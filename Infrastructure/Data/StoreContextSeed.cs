@@ -8,7 +8,7 @@ using Core.Entities;
 using Infrastructure.Data;
 using Microsoft.Extensions.Logging;
 
-namespace Infrastructure
+namespace Infrastructure.Data
 {
     public class StoreContextSeed
     {
@@ -19,7 +19,7 @@ namespace Infrastructure
                 if(!context.ProductBrands.Any())
                 {
                     var brandsData = 
-                        File.ReadAllText("../Infrastructure/SeedData/brands.json");
+                        File.ReadAllText("../Infrastructure/Data/SeedData/brands.json");
                     var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
                     
                     foreach (var item in brands)
@@ -33,7 +33,7 @@ namespace Infrastructure
                 if(!context.ProductTypes.Any())
                 {
                     var typesData = 
-                        File.ReadAllText("../Infrastructure/SeedData/types.json");
+                        File.ReadAllText("../Infrastructure/Data/SeedData/types.json");
                     var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
                     
                     foreach (var item in types)
@@ -47,7 +47,7 @@ namespace Infrastructure
                 if(!context.Products.Any())
                 {
                     var productsData = 
-                        File.ReadAllText("../Infrastructure/SeedData/products.json");
+                        File.ReadAllText("../Infrastructure/Data/SeedData/products.json");
                     var products = JsonSerializer.Deserialize<List<Product>>(productsData);
                     
                     foreach (var item in products)
