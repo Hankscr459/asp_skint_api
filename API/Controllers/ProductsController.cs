@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using API.Dto;
 using API.Errors;
 using AutoMapper;
+using Core;
 using Core.Entities;
 using Core.Interface;
 using Core.Specifications;
@@ -27,9 +28,9 @@ namespace API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts(
-            string sort, int? brandId, int? typeId)
+            [FromQuery]ProductSpecParams procutParams)
         {
-            var spec = new ProductsWithTypesAndBrandsSpecification(sort, brandId, typeId);
+            var spec = new ProductsWithTypesAndBrandsSpecification(procutParams);
             var products = await _productsRepo.ListAsync(spec);
 
             return Ok(_mapper
