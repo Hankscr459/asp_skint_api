@@ -41,5 +41,19 @@ namespace Infrastructure.Data
         {
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
         }
+
+        public void Add(T entity)
+        {
+            _context.Add(entity);
+        }
+
+        public void Delete(T entity)
+        {
+            _context.Remove(entity);
+        }
+        public async Task<bool> SaveAll()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }
