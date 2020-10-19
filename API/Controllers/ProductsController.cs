@@ -108,6 +108,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, [FromForm]Product product)
         {
+            product.Id = id;
             string webRootPath = _hostEnvironment.WebRootPath;
              if (ModelState.IsValid) 
              {
