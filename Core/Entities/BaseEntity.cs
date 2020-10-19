@@ -1,9 +1,10 @@
-using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.Entities
 {
     public class BaseEntity
     {
-        public Guid Id { get; set; }
+        [Key]
+        public int Id { get; set; }
     }
 }

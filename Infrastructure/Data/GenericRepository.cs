@@ -73,6 +73,8 @@ namespace Infrastructure.Data
                 objFormDb.ProductTypeId = product.ProductTypeId;
                 objFormDb.ProductBrand = product.ProductBrand;
                 objFormDb.ProductBrandId = product.ProductBrandId;
+                objFormDb.ProductType = product.ProductType;
+                objFormDb.ProductType = product.ProductType;
             }
         }
     }

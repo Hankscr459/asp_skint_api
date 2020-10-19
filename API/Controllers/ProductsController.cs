@@ -52,7 +52,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ProductToReturnDto>> GetProduct(Guid id)
+        public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             var product = await _productsRepo.GetEntityWithSpec(spec);
@@ -106,7 +106,7 @@ namespace API.Controllers
 
         // Fail to Update
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(Guid id, [FromForm]Product product)
+        public async Task<IActionResult> UpdateProduct(int id, [FromForm]Product product)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             Product objFormDb = await _productsRepo.GetEntityWithSpec(spec);
@@ -153,7 +153,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(Guid id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             var product = await _productsRepo.GetEntityWithSpec(spec);
