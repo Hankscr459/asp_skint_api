@@ -92,8 +92,8 @@ namespace API.Controllers
 
                 if (product.PictureUrl != null)
                 {
-                    // this is edit and we need to remove old image objFromDb
-                    var imagePath = Path.Combine(webRootPath, product.PictureUrl.Trim('\\'));
+                    // this is edit and we need to remove old image
+                    var imagePath = Path.Combine(webRootPath, product.PictureUrl.TrimStart('\\'));
                     if (System.IO.File.Exists(imagePath))
                     {
                         System.IO.File.Delete(imagePath);
@@ -103,7 +103,7 @@ namespace API.Controllers
                 {
                     files[0].CopyTo(filesStreams);
                 }
-                product.PictureUrl = @"\images\products\" + fileName + extenstion;
+                product.PictureUrl = "images/products/" + fileName + extenstion;
             }
             _productsRepo.Add(product);
             if (await _productsRepo.SaveAll())
