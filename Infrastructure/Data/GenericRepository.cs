@@ -55,5 +55,25 @@ namespace Infrastructure.Data
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public void UpdateProduct(Product product)
+        {
+            var objFormDb = _context.Products.FirstOrDefault(x => x.Id == product.Id);
+
+            if (objFormDb != null)
+            {
+                if (product.PictureUrl != null)
+                {
+                    objFormDb.PictureUrl = product.PictureUrl;
+                }
+                objFormDb.Name = product.Name;
+                objFormDb.Description = product.Description;
+                objFormDb.Price = product.Price;
+                objFormDb.ProductType = product.ProductType;
+                objFormDb.ProductTypeId = product.ProductTypeId;
+                objFormDb.ProductBrand = product.ProductBrand;
+                objFormDb.ProductBrandId = product.ProductBrandId;
+            }
+        }
     }
 }

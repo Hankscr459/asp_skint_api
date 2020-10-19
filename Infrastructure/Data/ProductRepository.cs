@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Infrastructure.Data {
             _context = context;
         }
 
-        public async Task<Product> GetProductByIdAsync (int id) 
+        public async Task<Product> GetProductByIdAsync (Guid id) 
         {
             return await _context.Products
                 .Include(p => p.ProductType)

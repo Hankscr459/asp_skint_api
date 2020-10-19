@@ -52,7 +52,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
+        public async Task<ActionResult<ProductToReturnDto>> GetProduct(Guid id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             var product = await _productsRepo.GetEntityWithSpec(spec);
@@ -89,16 +89,7 @@ namespace API.Controllers
                 // We need to navigate to the path of images and product
                 var uploads = Path.Combine(webRootPath, @"images\products");
                 var extenstion = Path.GetExtension(files[0].FileName);
-
-                if (product.PictureUrl != null)
-                {
-                    // this is edit and we need to remove old image
-                    var imagePath = Path.Combine(webRootPath, product.PictureUrl.TrimStart('\\'));
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
-                }
+                
                 using (var filesStreams = new FileStream(Path.Combine(uploads, fileName + extenstion), FileMode.Create))
                 {
                     files[0].CopyTo(filesStreams);
@@ -110,11 +101,59 @@ namespace API.Controllers
             {
                 return Ok();
             }
-            throw new Exception("Creating the message failed on save");
+            throw new Exception("Creating the Product failed on save");
+        }
+
+        // Fail to Update
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(Guid id, [FromForm]Product product)
+        {
+            var spec = new ProductsWithTypesAndBrandsSpecification(id);
+            Product objFormDb = await _productsRepo.GetEntityWithSpec(spec);
+            string webRootPath = _hostEnvironment.WebRootPath;
+             if (ModelState.IsValid) 
+             {
+                // We need to retrieve all the files that were uploaded
+                var files = HttpContext.Request.Form.Files;
+                if (files.Count > 0)
+                {
+                    // We will have a string file name on the file names for the images
+                    string fileName = Guid.NewGuid().ToString();
+
+                    // We need to navigate to the path of images and product
+                    var uploads = Path.Combine(webRootPath, @"images\products");
+                    var extenstion = Path.GetExtension(files[0].FileName);
+
+                    if (product.PictureUrl != null)
+                    {
+                        // this is edit and we need to remove old image
+                        var imagePath = Path.Combine(webRootPath, product.PictureUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }
+                    using (var filesStreams = new FileStream(Path.Combine(uploads, fileName + extenstion), FileMode.Create))
+                    {
+                        files[0].CopyTo(filesStreams);
+                    }
+                    product.PictureUrl = "images/products/" + fileName + extenstion;
+                } else {
+                    product.PictureUrl = objFormDb.PictureUrl;
+                }
+
+                _productsRepo.UpdateProduct(product);
+
+                if (await _productsRepo.SaveAll())
+                {
+                    return Ok();
+                }
+            }
+            throw new Exception("Fail to Update");
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(Guid id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             var product = await _productsRepo.GetEntityWithSpec(spec);
