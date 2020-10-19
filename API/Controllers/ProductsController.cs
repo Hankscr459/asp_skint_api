@@ -99,7 +99,7 @@ namespace API.Controllers
             _productsRepo.Add(product);
             if (await _productsRepo.SaveAll())
             {
-                return Ok();
+                return Ok(product);
             }
             throw new Exception("Creating the Product failed on save");
         }
@@ -108,8 +108,6 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, [FromForm]Product product)
         {
-            var spec = new ProductsWithTypesAndBrandsSpecification(id);
-            Product objFormDb = await _productsRepo.GetEntityWithSpec(spec);
             string webRootPath = _hostEnvironment.WebRootPath;
              if (ModelState.IsValid) 
              {
@@ -139,15 +137,22 @@ namespace API.Controllers
                     }
                     product.PictureUrl = "images/products/" + fileName + extenstion;
                 } else {
-                    product.PictureUrl = objFormDb.PictureUrl;
+                    if (product.Id != 0)
+                    {
+                        var spec = new ProductsWithTypesAndBrandsSpecification(id);
+                        Product objFormDb = await _productsRepo.GetEntityWithSpec(spec);
+                        product.PictureUrl = objFormDb.PictureUrl;
+                    }
                 }
-
-                _productsRepo.UpdateProduct(product);
-
-                if (await _productsRepo.SaveAll())
+                if (product.Id != 0)
                 {
-                    return Ok();
+                    _productsRepo.UpdateProduct(product);
+                    if (await _productsRepo.SaveAll())
+                    {
+                        return Ok(product);
+                    }
                 }
+                
             }
             throw new Exception("Fail to Update");
         }
