@@ -137,21 +137,18 @@ namespace API.Controllers
                         files[0].CopyTo(filesStreams);
                     }
                     product.PictureUrl = "images/products/" + fileName + extenstion;
+                    
                 } else {
-                    if (product.Id != 0)
-                    {
-                        var spec = new ProductsWithTypesAndBrandsSpecification(id);
-                        Product objFormDb = await _productsRepo.GetEntityWithSpec(spec);
-                        product.PictureUrl = objFormDb.PictureUrl;
-                    }
+                    var spec = new ProductsWithTypesAndBrandsSpecification(id);
+                    Product objFormDb = await _productsRepo.GetEntityWithSpec(spec);
+                    product.PictureUrl = objFormDb.PictureUrl;
                 }
-                if (product.Id != 0)
+
+                _productsRepo.UpdateProduct(product);
+
+                if (await _productsRepo.SaveAll())
                 {
-                    _productsRepo.UpdateProduct(product);
-                    if (await _productsRepo.SaveAll())
-                    {
-                        return Ok(product);
-                    }
+                    return Ok(product);
                 }
                 
             }
