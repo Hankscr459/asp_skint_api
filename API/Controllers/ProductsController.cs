@@ -104,7 +104,6 @@ namespace API.Controllers
             throw new Exception("Creating the Product failed on save");
         }
 
-        // Fail to Update
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, [FromForm]Product product)
         {
