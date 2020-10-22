@@ -58,24 +58,8 @@ namespace Infrastructure.Data
 
         public void UpdateProduct(Product product)
         {
-            var objFormDb = _context.Products.FirstOrDefault(x => x.Id == product.Id);
-
-            if (objFormDb != null)
-            {
-                if (product.PictureUrl != null)
-                {
-                    objFormDb.PictureUrl = product.PictureUrl;
-                }
-                objFormDb.Name = product.Name;
-                objFormDb.Description = product.Description;
-                objFormDb.Price = product.Price;
-                objFormDb.ProductType = product.ProductType;
-                objFormDb.ProductTypeId = product.ProductTypeId;
-                objFormDb.ProductBrand = product.ProductBrand;
-                objFormDb.ProductBrandId = product.ProductBrandId;
-                objFormDb.ProductType = product.ProductType;
-                objFormDb.ProductType = product.ProductType;
-            }
+            var entry = _context.Products.First(e=>e.Id == product.Id);
+            _context.Entry(entry).CurrentValues.SetValues(product);
         }
     }
 }

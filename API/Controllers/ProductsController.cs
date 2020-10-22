@@ -138,7 +138,9 @@ namespace API.Controllers
                     }
                     product.PictureUrl = "images/products/" + fileName + extenstion;
                     
-                } else {
+                } 
+                if (product.PictureUrl == null)
+                {
                     var spec = new ProductsWithTypesAndBrandsSpecification(id);
                     Product objFormDb = await _productsRepo.GetEntityWithSpec(spec);
                     product.PictureUrl = objFormDb.PictureUrl;
