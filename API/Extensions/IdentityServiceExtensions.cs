@@ -11,7 +11,7 @@ namespace API.Extensions
         {
             var builder = services.AddIdentityCore<AppUser>();
 
-            builder = new Microsoft.AspNetCore.Identity.IdentityBuilder(builder.UserType, builder.Services);
+            builder = new IdentityBuilder(builder.UserType, builder.Services);
             builder.AddEntityFrameworkStores<AppIdentityDbContext>();
             builder.AddSignInManager<SignInManager<AppUser>>();
 
