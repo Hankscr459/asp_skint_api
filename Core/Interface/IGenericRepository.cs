@@ -8,6 +8,7 @@ namespace Core.Interface
     public interface IGenericRepository<T> where T : BaseEntity
     {
         void Add(T entity);
+        void Update(T entity);
         void UpdateProduct(Product product);
         Task<T> GetByIdAsync(int id);
         void Delete(T entity);

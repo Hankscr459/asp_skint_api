@@ -44,12 +44,12 @@ namespace Infrastructure.Data
 
         public void Add(T entity)
         {
-            _context.Add(entity);
+            _context.Set<T>().Add(entity);
         }
 
         public void Delete(T entity)
         {
-            _context.Remove(entity);
+            _context.Set<T>().Remove(entity);
         }
         public async Task<bool> SaveAll()
         {
@@ -60,6 +60,12 @@ namespace Infrastructure.Data
         {
             var entry = _context.Products.First(e=>e.Id == product.Id);
             _context.Entry(entry).CurrentValues.SetValues(product);
+        }
+
+        public void Update(T entity)
+        {
+            _context.Set<T>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
         }
     }
 }
