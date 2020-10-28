@@ -29,10 +29,11 @@ namespace API.Controllers {
         public async Task<ActionResult<UserDto>> GetCurrentUser () {
 
             var user = await _userManager.FindByEmailFromClaimsPrinciple (HttpContext.User);
+            var token = await _tokenService.CreateToken (user);
 
             return new UserDto {
                 Email = user.Email,
-                    Token = _tokenService.CreateToken (user),
+                    Token = token,
                     DisplayName = user.DisplayName
             };
         }
@@ -71,12 +72,13 @@ namespace API.Controllers {
             if (user == null) return Unauthorized (new ApiResponse (401));
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            var token = await _tokenService.CreateToken (user);
 
             if (!result.Succeeded) return Unauthorized (new ApiResponse (401));
 
             return new UserDto {
                 Email = user.Email,
-                    Token = _tokenService.CreateToken (user),
+                    Token = token,
                     DisplayName = user.DisplayName
             };
         }
@@ -98,7 +100,7 @@ namespace API.Controllers {
 
             return new UserDto {
                 DisplayName = user.DisplayName,
-                    Token = _tokenService.CreateToken (user),
+                    Token = await _tokenService.CreateToken (user),
                     Email = user.Email
             };
         }
