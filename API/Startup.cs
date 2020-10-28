@@ -4,8 +4,10 @@ using API.Middleware;
 using AutoMapper;
 using Infrastructure.Data;
 using Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +27,13 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(MappingProfiles));
-            services.AddControllers();
+            services.AddControllers(opts =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                opts.Filters.Add(new AuthorizeFilter(policy));
+            });
             services.AddDbContext<StoreContext>(x => 
                 x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
             services.AddDbContext<AppIdentityDbContext>(x => 
