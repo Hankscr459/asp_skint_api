@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20201028102420_IdentityAddAdmin")]
+    [Migration("20201028121745_IdentityAddAdmin")]
     partial class IdentityAddAdmin
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
