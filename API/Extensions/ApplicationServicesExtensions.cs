@@ -51,6 +51,12 @@ namespace API.Extensions
                     return new BadRequestObjectResult(errorResponse);
                 };
             });
+            services.AddAuthorization(opts =>
+            {
+                opts.AddPolicy("RequiredAdminRole", policy => policy.RequireRole("Admin"));
+                opts.AddPolicy("ModerateProductRole", policy => policy.RequireRole("Admin", "Moderator"));
+                opts.AddPolicy("VipOnly", policy => policy.RequireRole("VIP"));
+            });
 
             return services;
         }

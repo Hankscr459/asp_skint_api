@@ -14,12 +14,27 @@ namespace API.Controllers
         }
         
         [HttpGet("testauth")]
-        [Authorize]
+        [Authorize(Roles = "Member")]
         public ActionResult<string> GetSecretText()
         {
             return "secret stuff";
         }
 
+        [HttpGet("moderate")]
+        [Authorize(Policy = "ModerateProductRole")]
+        public ActionResult<string> ModerateProductRolet()
+        {
+            return "secret stuff moderate";
+        }
+
+        [HttpGet("admin")]
+        [Authorize(Policy = "RequiredAdminRole")]
+        public ActionResult<string> GetSecretTextWithAdmin()
+        {
+            return "secret stuff admin";
+        }
+
+        [AllowAnonymous]
         [HttpGet("notfound")]
         public ActionResult GetNotFoundRequrest()
         {
@@ -31,6 +46,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet("servererror")]
         public ActionResult GetServerError()
         {
@@ -39,12 +55,14 @@ namespace API.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet("badrequest")]
         public ActionResult GetBadRequest()
         {
             return BadRequest(new ApiResponse(400));
         }
 
+        [AllowAnonymous]
         [HttpGet("badrequest/{id}")]
         public ActionResult GetNotFoundRequest(int id)
         {
